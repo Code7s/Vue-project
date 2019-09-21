@@ -14,6 +14,7 @@ import 'mint-ui/lib/style.css';
 Vue.component(Header.name, Header);
 // 导入MUI
 import './lib/mui/css/mui.min.css'
+import './lib/mui/css/iconfont.css'
 
 // 创建Vue实例
 var vm = new Vue({
