@@ -35,7 +35,11 @@ import 'mint-ui/lib/style.css'; //vue2.5需导入css
 Vue.component(Header.name, Header);
 ```
 
+导入完成就可以在App.vue中使用了:
 
+```vue
+<mt-header fixed title="Code7s Vue项目"></mt-header>
+```
 
 ## footer
 
@@ -106,15 +110,86 @@ import './lib/mui/css/iconfont.css';
    }
    ```
 
-   然后将iconfont.css及iconfont.ttf两个文件分别拷贝到mui工程css及fonts目录下，然后即可在mui中引用刚生成的字体图标,方式如下:
+   
+
+5. 将iconfont.css及iconfont.ttf两个文件分别拷贝到mui目录下的css及fonts目录下，然后即可在mui中引用刚生成的字体图标,方式如下:
 
    `<span class="mui-icon iconfont icon-shopcart">`
 
+## tabbar
+
+将4个底部选项a链接改成 `router-link` ,修改后如下:
+
+``` html
+<nav class="mui-bar mui-bar-tab">
+    <router-link class="mui-tab-item" to="/home">
+        <span class="mui-icon mui-icon-home"></span>
+        <span class="mui-tab-label">首页</span>
+    </router-link>
+    <router-link class="mui-tab-item" to="/vip">
+        <span class="mui-icon iconfont icon-huiyuan"></span>
+        <span class="mui-tab-label">会员</span>
+    </router-link>
+    <router-link class="mui-tab-item" to="/shopcar">
+        <span class="mui-icon iconfont icon-gouwuche">
+            <span class="mui-badge">9</span>
+        </span>
+        <span class="mui-tab-label">购物车</span>
+    </router-link>
+    <router-link class="mui-tab-item" href="#tabbar-with-map" to="/search">
+        <span class="mui-icon iconfont icon-sousuo"></span>
+        <span class="mui-tab-label">搜索</span>
+    </router-link>
+</nav>
+```
+
+创建tabbar路由组件:
+
+在 src目录下创建 `components/tabbar` 文件夹,在tabbar文件夹中新建四个组件:
+
+- Home.vue
+- Vip.vue
+- ShopCar.vue
+- Search.vue
+
+在index.js中配置路由:
+
+```js
+// 导入vue-router
+import VueRouter from 'vue-router'
+Vue.use(VueRouter);
+// 导入路由模块
+import routerObj from './router.js'
+// 在vue实例上添加
+router: routerObj
+```
+
+配置路由模块:
+
+``` js
+// 导入vue-router
+import VueRouter from 'vue-router'
+// 路由对象
+var routerObj = new VueRouter({
+  routes:[
+    {path:'/home',component: Home},
+    {path:'/vip',component: Vip},
+    {path:'/shopcar',component: ShopCar},
+    {path:'/search',component: Search}
+  ],
+  linkActiveClass: 'mui-active'// 覆盖默认路由选中类(router-link-active)
+})
+// 导出routerObj对象
+export default routerObj
+```
+
+在App.vue中的头部与尾部之间添加路由显示区:
+
+`<router-view></router-view>`
+
 ## 上传到github
 
-创建
-
-`.gitgonre`文件,屏蔽一下文件:
+创建`.gitgonre`文件,屏蔽一下文件:
 
 ``` txt
 node_modules

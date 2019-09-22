@@ -21,5 +21,6 @@ var vm = new Vue({
   el: '#app',
   data: {},
   methods: {},
+  router: routerObj,
   render: c => c(App)
 })
