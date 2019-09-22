@@ -5,22 +5,120 @@
 ## 技术栈
 
 1. Vue
-
 2. webpack
-
 3. Mint-UI
-
 4. MUI
-
-   
-
 
 
 ## 开始项目
 
-
-
 安装Mint-UI: `npm install mint-ui -S`
+
+目录结构:
+
+```js
+├──dist
+├──node_modules
+├──src
+│   ├──lib
+│   ├──index.html
+│   ├──App.vue
+│   ├──index.js
+│   ├──router.js
+├──.gitignore
+├──README.md
+├──package.json
+├──webpack.config.js
+```
+
+
+
+webpack.json配置:
+
+```webpack.json
+{
+  "name": "vue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^3.2.0",
+    "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.3.1",
+    "style-loader": "^1.0.0",
+    "url-loader": "^2.1.0",
+    "vue-loader": "^15.7.1",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.8",
+    "webpack-dev-server": "^3.8.1"
+  },
+  "dependencies": {
+    "mint-ui": "^2.2.13",
+    "vue": "^2.6.10",
+    "vue-resource": "^1.5.1",
+    "vue-router": "^3.1.3"
+  }
+}
+```
+
+webpack.config.js配置:
+
+``` js
+const path = require('path');
+const webpack = require('webpack');
+const htmlWebpackPlugin = require('html-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+module.exports = {
+  entry: './src/index.js',
+  mode: 'development',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.js'
+  },
+  devServer: {
+    open: true,
+    port: 3000,
+    contentBase: 'src',
+    hot: true
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new htmlWebpackPlugin({
+      template: path.join(__dirname, './src/index.html'),
+      filename: 'index.html'
+    }),
+    new VueLoaderPlugin()
+  ],
+  module: {
+    rules: [
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      // { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+      { test: /\.s[ac]ss$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
+      { test: /\.(jpg|png|gif|jpeg|bmp|svg)$/, use: ['url-loader?limit=7000&name=[hash:10]-[name].[ext]'] },
+      { test: /\.(ttf|eot|svg|woff|woff2)$/, use: 'url-loader' },
+      { test: /\.js$/, use: ['babel-loader'], exclude: /node_modules/ },
+      { test: /\.vue$/, use: ['vue-loader'] }
+    ]
+  }
+}
+```
+
+
 
 ## header
 
@@ -187,6 +285,72 @@ export default routerObj
 
 `<router-view></router-view>`
 
+## swipe
+
+在index.js中导入MintUI时添加 `Swipe, SwipeItem`两项
+
+``` js
+import { Header,Swipe, SwipeItem } from 'mint-ui';
+Vue.component(Swipe.name, Swipe);
+Vue.component(SwipeItem.name, SwipeItem);
+//由于需要ajax获取属性,需导入vue-resource
+import VueResource from 'vue-resource';
+Vue.use(VueResource)
+```
+
+编辑Home.vue
+
+``` html
+<template>
+  <div>
+    <mt-swipe :auto="3000">
+      <mt-swipe-item v-for="item in bannerList" :key="item.id">
+        <img :src="item.img" alt="">
+      </mt-swipe-item>
+    </mt-swipe>
+  </div>
+</template>
+<script>
+import{ Toast } from 'mint-ui'
+export default {
+  data() {
+    return {
+      bannerList: [] //轮播
+    };
+  },
+  methods: {
+    getBanner() {
+      this.$http
+        .get("http://www.liulongbin.top:3005/api/getlunbo")
+        .then(result => {
+          if (result.body.status===0) {
+            this.bannerList=result.body.message
+          }else{
+            Toast('加载轮播图失败')
+          }
+        });
+    }
+  },
+  created() {
+    this.getBanner();
+  }
+};
+</script>
+<style lang="scss" scoped>
+.mint-swipe{
+  height: 200px;
+  .mint-swipe-item{
+    img{
+      width: 100%;
+      height: 100%;
+    }  
+  }
+}
+</style>
+```
+
+
+
 ## 上传到github
 
 创建`.gitgonre`文件,屏蔽一下文件:
@@ -214,4 +378,16 @@ git push -u origin master
 ```
 
 
+
+## API
+
+轮播 http://www.liulongbin.top:3005/api/getlunbo
+
+新闻列表
+
+http://www.liulongbin.top:3005/api/getnewslist
+
+商品列表
+
+http://www.liulongbin.top:3005/api/getprodlist
 
