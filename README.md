@@ -6,8 +6,8 @@
 
 1. Vue
 2. webpack
-3. Mint-UI
-4. MUI
+3. [Mint-UI](http://mint-ui.github.io/docs/#/zh-cn2/)
+4. [MUI](https://dev.dcloud.net.cn/mui/)
 
 
 ## 开始项目
@@ -21,6 +21,7 @@
 ├──node_modules
 ├──src
 │   ├──lib
+│   ├──images
 │   ├──index.html
 │   ├──App.vue
 │   ├──index.js
@@ -31,7 +32,7 @@
 ├──webpack.config.js
 ```
 
-
+记得使用 `.gitignore` 屏蔽掉node_modules文件夹
 
 webpack.json配置:
 
@@ -118,6 +119,15 @@ module.exports = {
 }
 ```
 
+运行 `cnpm i` 后在index.js中导入Vue,如果存在包之间版本不对应请看 [webpack总结](https://www.code7s.com/20190907/webpack学习总结/)
+
+``` js
+// 导入Vue
+import Vue from 'vue'
+// 导入App.vue
+import App from './App.vue'
+```
+
 
 
 ## 首页页面
@@ -126,9 +136,7 @@ module.exports = {
 
 ### header
 
-
-
-使用[MintUI](http://mint-ui.github.io/docs/#/zh-cn2/)
+使用MintUI
 
 在index.js中导入组件:
 
@@ -147,7 +155,7 @@ Vue.component(Header.name, Header);
 
 ### footer
 
-使用 [MUI](https://dev.dcloud.net.cn/mui/)
+使用 MUI
 
 **MUI无法使用npm安装需要手动在github上下载,然后把dist文件夹改名为mui复制到自己的项目`src/lib`中**
 
@@ -221,6 +229,8 @@ import './lib/mui/css/iconfont.css';
    `<span class="mui-icon iconfont icon-shopcart">`
 
 ### tabbar
+
+使用 MUI
 
 将4个底部选项a链接改成 `router-link` ,修改后如下:
 
@@ -426,7 +436,7 @@ style添加:
 
 ## 上传到github
 
-创建`.gitgonre`文件,屏蔽一下文件:
+使用`.gitgonre`屏蔽以下文件:
 
 ``` txt
 node_modules
@@ -454,9 +464,29 @@ git push -u origin master
 
 ## API
 
-轮播 http://www.liulongbin.top:3005/api/getlunbo
+所有请求的域名为http://www.liulongbin.top:3005
 
-新闻列表 http://www.liulongbin.top:3005/api/getnewslist
+1.轮播图
 
-商品列表 http://www.liulongbin.top:3005/api/getprodlist
+|     地址      | /api/getlunbo |
+| :-----------: | :-----------: |
+|   请求方式    |      GET      |
+| 传入api的参数 |      无       |
+| 返回数据格式  |     JSON      |
+
+2.图文资讯
+
+|     地址      | /api/getnewslist |
+| :-----------: | :--------------: |
+|   请求方式    |       GET        |
+| 传入api的参数 |        无        |
+| 返回数据格式  |       JSON       |
+
+3.商品列表
+
+|     地址      | api/getprodlist |
+| :-----------: | :-------------: |
+|   请求方式    |       GET       |
+| 传入api的参数 |       无        |
+| 返回数据格式  |      JSON       |
 
