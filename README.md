@@ -383,11 +383,7 @@ git push -u origin master
 
 轮播 http://www.liulongbin.top:3005/api/getlunbo
 
-新闻列表
+新闻列表 http://www.liulongbin.top:3005/api/getnewslist
 
-http://www.liulongbin.top:3005/api/getnewslist
-
-商品列表
-
-http://www.liulongbin.top:3005/api/getprodlist
+商品列表 http://www.liulongbin.top:3005/api/getprodlist
 
