@@ -120,7 +120,13 @@ module.exports = {
 
 
 
-## header
+## 首页页面
+
+
+
+### header
+
+
 
 使用[MintUI](http://mint-ui.github.io/docs/#/zh-cn2/)
 
@@ -139,7 +145,7 @@ Vue.component(Header.name, Header);
 <mt-header fixed title="Code7s Vue项目"></mt-header>
 ```
 
-## footer
+### footer
 
 使用 [MUI](https://dev.dcloud.net.cn/mui/)
 
@@ -155,7 +161,7 @@ import './lib/mui/css/mui.min.css';
 import './lib/mui/css/iconfont.css';
 ```
 
-### 如何使用阿里图标库
+#### 如何使用阿里图标库
 
 [阿里图标库官网](https://www.iconfont.cn/)
 
@@ -214,7 +220,7 @@ import './lib/mui/css/iconfont.css';
 
    `<span class="mui-icon iconfont icon-shopcart">`
 
-## tabbar
+### tabbar
 
 将4个底部选项a链接改成 `router-link` ,修改后如下:
 
@@ -270,6 +276,7 @@ import VueRouter from 'vue-router'
 // 路由对象
 var routerObj = new VueRouter({
   routes:[
+ 	{path:'/',redirect:'/home'},
     {path:'/home',component: Home},
     {path:'/vip',component: Vip},
     {path:'/shopcar',component: ShopCar},
@@ -285,7 +292,7 @@ export default routerObj
 
 `<router-view></router-view>`
 
-## swipe
+### swipe
 
 在index.js中导入MintUI时添加 `Swipe, SwipeItem`两项
 
@@ -347,6 +354,72 @@ export default {
   }
 }
 </style>
+```
+
+### 六宫格
+
+在Home.vue中添加(依赖于MUI):
+
+``` html
+<ul id="sub-nav" class="mui-table-view mui-grid-view mui-grid-9">
+  <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+    <a href="#">
+      <img src="../../images/news.png" alt />
+      <!-- <span class="mui-badge">5</span> -->
+      <div class="mui-media-body">新闻资讯</div>
+    </a>
+  </li>
+  <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+    <a href="#">
+      <img src="../../images/image.png" alt />
+      <div class="mui-media-body">图片分享</div>
+    </a>
+  </li>
+  <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+    <a href="#">
+      <img src="../../images/buy.png" alt />
+      <div class="mui-media-body">商品购买</div>
+    </a>
+  </li>
+  <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+    <a href="#">
+      <img src="../../images/feedback.png" alt />
+      <div class="mui-media-body">留言反馈</div>
+    </a>
+  </li>
+  <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+    <a href="#">
+      <img src="../../images/video.png" alt />
+      <div class="mui-media-body">视频专区</div>
+    </a>
+  </li>
+  <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+    <a href="#">
+      <img src="../../images/contact.png" alt />
+      <div class="mui-media-body">联系我们</div>
+    </a>
+  </li>
+</ul>
+```
+
+可以自行找相应的图片存放在`src/images`下
+
+style添加:
+
+``` css
+#sub-nav {
+  background: white;
+  border: none;
+  .mui-table-view-cell {
+    border: none;
+    img {
+      width: 100%;
+    }
+    .mui-media-body{
+      font-size: 14px;
+    }
+  }
+}
 ```
 
 
