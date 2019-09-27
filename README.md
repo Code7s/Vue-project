@@ -364,6 +364,8 @@ Vue.component(SwipeItem.name, SwipeItem);
 //由于需要ajax获取属性,需导入vue-resource
 import VueResource from 'vue-resource';
 Vue.use(VueResource)
+// 设置请求根路径
+Vue.http.options.root = 'http://www.liulongbin.top:3005'
 ```
 
 编辑Home.vue
@@ -389,7 +391,7 @@ export default {
   methods: {
     getBanner() {
       this.$http
-        .get("http://www.liulongbin.top:3005/api/getlunbo")
+        .get("api/getlunbo")
         .then(result => {
           if (result.body.status===0) {
             this.bannerList=result.body.message
@@ -485,6 +487,118 @@ style添加:
 
 
 
+## 新闻咨询页
+
+### 新闻列表页
+
+在src/components/news下创建新闻页组件 News.vue
+
+然后把Home.vue中九宫格的点击改为路由连接：
+
+``` html
+<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+  <router-link to="/home/news">
+    <img src="../../images/news.png" alt />
+    <div class="mui-media-body">新闻资讯</div>
+  </router-link>
+</li>
+```
+
+在router.js中配置:
+
+``` js
+import News from './components/news/News.vue'
+// 在路由匹配规则添加以下项:
+{path:'/home/news',component: News}
+```
+
+编辑News.vue(引用MUI):
+
+```html
+<template>
+  <ul class="mui-table-view">
+    <li v-for="item in newsList" :key="item.id" class="mui-table-view-cell mui-media">
+      <a href="javascript:;">
+        <img class="mui-media-object mui-pull-left" :src="item.img_url" />
+        <div class="mui-media-body">
+          <h3>{{item.title}}</h3>
+          <p class="mui-ellipsis">
+            <span>发布时间：{{item.add_time | dateFormat}}</span>
+            <span>点击{{item.click}}次</span>
+          </p>
+        </div>
+      </a>
+    </li>
+  </ul>
+</template>
+```
+
+样式:
+
+``` css
+<style lang="scss" scoped>
+.mui-table-view {
+  padding-bottom: 50px;
+  .mui-media-body {
+    h3 {
+      font-size: 14px;
+    }
+    .mui-ellipsis {
+      font-size: 12px;
+      color: #189bff;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+</style>
+```
+
+因为获取到的时间需要格式化,使用插件moment,安装方式:
+
+`cnpm i moment -S`
+
+在index.js中导入moment,并创建全局过滤器:
+
+``` js
+// 导入格式化时间插件
+import moment from 'moment'
+// 全局过滤器
+Vue.filter('dateFormat', function (dataStr, pattern = "YYYY-MM-DD") {
+  return moment(dataStr).format(pattern)
+})
+```
+
+在News.vue中编辑js:
+
+```js
+import{ Toast } from 'mint-ui'
+export default {
+  data() {
+    return {
+      newsList: []
+    };
+  },
+  methods: {
+    getNews() {
+      this.$http.get("api/getnewslist").then(result => {
+        if (result.body.status === 0) {
+          this.newsList = result.body.message;
+          console.log(this.newsList);
+        } else {
+          Toast("加载新闻咨询失败");
+        }
+      });
+    }
+  },
+  created() {
+    this.getNews();
+  }
+};
+```
+
+
+
 ## 上传到github
 
 使用`.gitgonre`屏蔽以下文件:
@@ -515,7 +629,7 @@ git push -u origin master
 
 ## API
 
-所有请求的域名为http://www.liulongbin.top:3005
+所有请求的根路径为http://www.liulongbin.top:3005
 
 1.轮播图
 
