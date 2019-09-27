@@ -32,7 +32,7 @@
 ├──webpack.config.js
 ```
 
-记得使用 `.gitignore` 屏蔽掉node_modules文件夹
+记得使用 `.gitignore` 屏蔽掉node_modules文件夹
 
 webpack.json配置:
 
@@ -150,8 +150,22 @@ Vue.component(Header.name, Header);
 导入完成就可以在App.vue中使用了:
 
 ```vue
-<mt-header fixed title="Code7s Vue项目"></mt-header>
+<template>
+  <div class="container">
+    <mt-header fixed title="Code7s Vue项目"></mt-header>
+  </div>
+</template>
 ```
+
+然后给外部div添加内边距保证头部不会遮盖内容区:
+
+``` css
+.container{
+  padding-top:40px;
+}
+```
+
+
 
 ### footer
 
@@ -301,6 +315,43 @@ export default routerObj
 在App.vue中的头部与尾部之间添加路由显示区:
 
 `<router-view></router-view>`
+
+### 底部切换过渡效果
+
+在 App.vue中使用transaction把router-view包裹起来:
+
+``` html	
+<transition>
+    <router-view></router-view>
+</transition>
+```
+
+添加过渡样式:
+
+```css
+.container {
+  padding-top: 40px;
+  overflow-x: hidden;
+}
+.v-enter,
+.v-leave-to {
+  opacity: 0;
+}
+.v-enter {
+  transform: translate(100%);
+}
+.v-leave-to {
+  transform: translate(-100%);
+  position: absolute;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.2s ease;
+}
+```
+
+
 
 ### swipe
 
