@@ -584,7 +584,7 @@ export default {
       this.$http.get("api/getnewslist").then(result => {
         if (result.body.status === 0) {
           this.newsList = result.body.message;
-          console.log(this.newsList);
+          //console.log(this.newsList);
         } else {
           Toast("加载新闻咨询失败");
         }
@@ -596,6 +596,94 @@ export default {
   }
 };
 ```
+
+### 新闻详情页
+
+在News.vue中把新闻列表的a链接改为router-link:
+
+``` html
+<router-link :to="'/home/newsinfo/'+item.id">
+```
+
+配置路由模块:
+
+``` js
+import NewsInfo from './components/news/Newsinfo.vue'
+// 在路由匹配规则添加以下项:
+{path:'/home/newsinfo/:id',component: NewsInfo}
+```
+
+编辑Newsinfo.vue:
+
+``` html
+<template>
+  <div class="newsinfo">
+    <h3 class="title">{{newsInfo.title}}</h3>
+    <p class="sub-title">
+      <span>发布时间:{{newsInfo.add_time|dateFormat}}</span>
+      <span>点击{{newsInfo.click}}次</span>
+    </p>
+    <div class="content" v-html="newsInfo.content"></div>
+  </div>
+</template>
+```
+
+css:
+
+``` css
+<style lang="scss" scoped>
+.newsinfo {
+  padding: 0 5px;
+  .title {
+    font-size: 16px;
+    text-align: center;
+    margin: 15px 0;
+  }
+  .sub-title {
+    font-size: 12px;
+    color: #189bff;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #eee;
+  }
+  .content{
+    padding: 15px 0 50px;
+  }
+}
+</style>
+```
+
+js:
+
+``` js
+import{ Toast } from 'mint-ui'
+export default {
+  data() {
+    return {
+      // 将url传过来的id挂载到data上方便调用
+      id: this.$route.params.id,
+      newsInfo: {}
+    };
+  },
+  methods: {
+    getNewsInfo() {
+      this.$http.get("api/getnew/"+this.id).then(result => {
+        if (result.body.status === 0) {
+          this.newsInfo=result.body.message[0]
+        } else {
+          Toast("加载新闻详情失败");
+        }
+      });
+    }
+  },
+  created(){
+    this.getNewsInfo()
+  }
+};
+```
+
+
 
 
 
@@ -625,33 +713,4 @@ git remote add origin https://gitee.com/code7s/Vue-project.git
 git push -u origin master
 ```
 
-
-
-## API
-
-所有请求的根路径为http://www.liulongbin.top:3005
-
-1.轮播图
-
-|     地址      | /api/getlunbo |
-| :-----------: | :-----------: |
-|   请求方式    |      GET      |
-| 传入api的参数 |      无       |
-| 返回数据格式  |     JSON      |
-
-2.图文资讯
-
-|     地址      | /api/getnewslist |
-| :-----------: | :--------------: |
-|   请求方式    |       GET        |
-| 传入api的参数 |        无        |
-| 返回数据格式  |       JSON       |
-
-3.商品列表
-
-|     地址      | api/getprodlist |
-| :-----------: | :-------------: |
-|   请求方式    |       GET       |
-| 传入api的参数 |       无        |
-| 返回数据格式  |      JSON       |
 

@@ -1,7 +1,7 @@
 <template>
   <ul class="mui-table-view">
     <li v-for="item in newsList" :key="item.id" class="mui-table-view-cell mui-media">
-      <a href="javascript:;">
+      <router-link :to="'/home/newsinfo/'+item.id">
         <img class="mui-media-object mui-pull-left" :src="item.img_url" />
         <div class="mui-media-body">
           <h3>{{item.title}}</h3>
@@ -10,7 +10,7 @@
             <span>点击{{item.click}}次</span>
           </p>
         </div>
-      </a>
+      </router-link>
     </li>
   </ul>
 </template>
@@ -29,9 +29,9 @@ export default {
       this.$http.get("api/getnewslist").then(result => {
         if (result.body.status === 0) {
           this.newsList = result.body.message;
-          console.log(this.newsList);
+          // console.log(this.newsList);
         } else {
-          Toast("加载新闻咨询失败");
+          Toast("加载新闻列表失败");
         }
       });
     }

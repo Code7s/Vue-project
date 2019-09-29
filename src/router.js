@@ -5,15 +5,17 @@ import Vip from './components/tabbar/Vip.vue'
 import ShopCar from './components/tabbar/ShopCar.vue'
 import Search from './components/tabbar/Search.vue'
 import News from './components/news/News.vue'
+import NewsInfo from './components/news/Newsinfo.vue'
 // 路由对象
 var routerObj = new VueRouter({
-  routes:[
-    {path:'/',redirect:'/home'},
-    {path:'/home',component: Home},
-    {path:'/vip',component: Vip},
-    {path:'/shopcar',component: ShopCar},
-    {path:'/search',component: Search},
-    {path:'/home/news',component: News}
+  routes: [
+    { path: '/', redirect: '/home' },
+    { path: '/home', component: Home },
+    { path: '/vip', component: Vip },
+    { path: '/shopcar', component: ShopCar },
+    { path: '/search', component: Search },
+    { path: '/home/news', component: News },
+    { path: '/home/newsinfo/:id', component: NewsInfo }
   ],
   linkActiveClass: 'mui-active'// 覆盖默认路由选中类(router-link-active)
 })
