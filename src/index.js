@@ -13,11 +13,12 @@ Vue.http.options.root = 'http://www.liulongbin.top:3005'
 // 导入app组件
 import App from './App.vue'
 // 按需导入MintUI
-import { Header, Swipe, SwipeItem } from 'mint-ui';
-Vue.component(Swipe.name, Swipe);
-Vue.component(SwipeItem.name, SwipeItem);
+import { Header, Swipe, SwipeItem, Button } from 'mint-ui';
 // vue2.5需要导入css
 import 'mint-ui/lib/style.css';
+Vue.component(Swipe.name, Swipe);
+Vue.component(SwipeItem.name, SwipeItem);
+Vue.component(Button.name, Button);
 Vue.component(Header.name, Header);
 // 导入MUI
 import './lib/mui/css/mui.min.css'
@@ -27,6 +28,9 @@ import './lib/mui/css/iconfont.css'
 import moment from 'moment'
 // 全局过滤器
 Vue.filter('dateFormat', function (dataStr, pattern = "YYYY-MM-DD") {
+  return moment(dataStr).format(pattern)
+})
+Vue.filter('MDHms', function (dataStr, pattern = "MM-DD \n HH:mm:ss") {
   return moment(dataStr).format(pattern)
 })
 

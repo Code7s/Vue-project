@@ -6,12 +6,14 @@
       <span>点击{{newsInfo.click}}次</span>
     </p>
     <div class="content" v-html="newsInfo.content"></div>
+    <comment-box :newsid="this.id"></comment-box>
   </div>
 </template>
 
 <script>
-import{ Toast } from 'mint-ui'
-import { log } from 'util';
+import comment from "../subcomponent/comment.vue";
+import { Toast } from "mint-ui";
+import { log } from "util";
 export default {
   data() {
     return {
@@ -22,24 +24,28 @@ export default {
   },
   methods: {
     getNewsInfo() {
-      this.$http.get("api/getnew/"+this.id).then(result => {
+      this.$http.get("api/getnew/" + this.id).then(result => {
         if (result.body.status === 0) {
-          this.newsInfo=result.body.message[0]
+          this.newsInfo = result.body.message[0];
         } else {
           Toast("加载新闻详情失败");
         }
       });
     }
   },
-  created(){
-    this.getNewsInfo()
+  components: {
+    // 评论子组件
+    "comment-box": comment
+  },
+  created() {
+    this.getNewsInfo();
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .newsinfo {
-  padding: 0 5px;
+  padding: 0 5px 50px;
   .title {
     font-size: 16px;
     text-align: center;
@@ -53,8 +59,8 @@ export default {
     padding-bottom: 2px;
     border-bottom: 1px solid #eee;
   }
-  .content{
-    padding: 15px 0 50px;
+  .content {
+    padding: 15px 0;
   }
 }
 </style>

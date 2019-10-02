@@ -633,7 +633,7 @@ css:
 ``` css
 <style lang="scss" scoped>
 .newsinfo {
-  padding: 0 5px;
+  padding: 0 5px 50px;
   .title {
     font-size: 16px;
     text-align: center;
@@ -648,7 +648,7 @@ css:
     border-bottom: 1px solid #eee;
   }
   .content{
-    padding: 15px 0 50px;
+    padding: 15px 0;
   }
 }
 </style>
@@ -681,6 +681,134 @@ export default {
     this.getNewsInfo()
   }
 };
+```
+
+### 评论子组件
+
+在src/components/subcpmponent下新建comment.vue
+
+然后在Newsinfo.vue中导入这个组件:
+
+``` js
+import comment from "../subcomponent/comment.vue";
+```
+
+在实例上创建私有组件:
+
+``` js
+ components: {
+    // 评论子组件
+    "comment-box": comment
+ },
+```
+
+挂载到template上:
+
+``` html
+<comment-box></comment-box>
+```
+
+在index.js上导入mintUI的按钮并创建一个时间过滤器:
+
+``` js
+import { Header, Swipe, SwipeItem, Button } from 'mint-ui';//Button是添加的
+Vue.component(Button.name, Button);
+// 过滤时间为: 月-日 时:分:秒
+Vue.filter('MDHms', function (dataStr, pattern = "MM-DD \n HH:mm:ss") {
+  return moment(dataStr).format(pattern)
+})
+```
+
+把Newsinfo.vue中的id值传给子组件:
+
+``` html
+在Newsinfo中的评论组件添加:newsid="this.id"
+<comment-box :newsid="this.id"></comment-box>
+```
+
+编辑comment.vue:
+
+tampalate:
+
+``` html
+<div class="comment-box">
+  <h3>发表评论:</h3>
+  <textarea placeholder="请输入评论内容..." cols="30" rows="6"></textarea>
+  <mt-button class="mint-button mint-button--primary mint-button--large">评论</mt-button>
+  <div class="comment-list">
+    <div class="cmt-item" v-for="comment in commentList" :key="comment.index">
+      <p class="cmt-title">
+        {{comment.user_name}}
+        <span>{{comment.add_time|MDHms}}</span>
+      </p>
+      <div class="cmt-body">{{comment.content}}</div>
+    </div>
+  </div>
+</div>
+```
+
+style:
+
+``` css
+<style lang="scss" scoped>
+.comment-box {
+  h3 {
+    font-size: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  textarea {
+    margin-top: 15px;
+  }
+  .comment-list {
+    .cmt-item {
+      padding: 10px 0;
+      border-bottom: 1px dashed #eee;
+    }
+    .cmt-title {
+      color: #189bff;
+      span {
+        color: rgb(206, 206, 206);
+      }
+    }
+  }
+}
+</style>
+```
+
+js:
+
+``` js
+<script>
+import { Toast } from "mint-ui";
+export default {
+  data() {
+    return {
+      commentList: [],
+      pageIndex: 1
+    };
+  },
+  methods: {
+    getComments() {
+      this.$http
+        .get("api/getcomments/" + this.newsid + "?pageindex=" + this.pageIndex)
+        .then(result => {
+          if (result.body.status === 0) {
+            this.commentList = result.body.message;
+            console.log(this.commentList);
+            
+          } else {
+            Toast("加载评论列表失败");
+          }
+        });
+    }
+  },
+  props: ["newsid"],
+  created() {
+    this.getComments();
+  }
+};
+</script>
 ```
 
 
