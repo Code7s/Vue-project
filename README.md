@@ -292,7 +292,7 @@ import routerObj from './router.js'
 router: routerObj
 ```
 
-配置路由模块:
+配置路由模块(router.js):
 
 ``` js
 // 导入vue-router
@@ -300,7 +300,7 @@ import VueRouter from 'vue-router'
 // 路由对象
 var routerObj = new VueRouter({
   routes:[
- 	{path:'/',redirect:'/home'},
+ 		{path:'/',redirect:'/home'},
     {path:'/home',component: Home},
     {path:'/vip',component: Vip},
     {path:'/shopcar',component: ShopCar},
@@ -733,7 +733,7 @@ tampalate:
 ``` html
 <div class="comment-box">
   <h3>发表评论:</h3>
-  <textarea placeholder="请输入评论内容..." cols="30" rows="6"></textarea>
+  <textarea placeholder="请输入评论内容(120字)..." maxlength="120"></textarea>
   <mt-button class="mint-button mint-button--primary mint-button--large">评论</mt-button>
   <div class="comment-list">
     <div class="cmt-item" v-for="comment in commentList" :key="comment.index">
@@ -833,7 +833,7 @@ node_modules
 //全局设置:
 git config --global user.name "code7s"
 git config --global user.email "code7s@qq.com"
-//上传到本地git:
+//上传到本地git仓库:
 git init
 git commit -m "first commit"
 //上传到github:

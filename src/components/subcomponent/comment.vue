@@ -1,7 +1,7 @@
 <template>
   <div class="comment-box">
     <h3>发表评论:</h3>
-    <textarea placeholder="请输入评论内容..." cols="30" rows="6"></textarea>
+    <textarea placeholder="请输入评论内容(120字)..." maxlength="120"></textarea>
     <mt-button class="mint-button mint-button--primary mint-button--large">评论</mt-button>
     <div class="comment-list">
       <div class="cmt-item" v-for="comment in commentList" :key="comment.index">

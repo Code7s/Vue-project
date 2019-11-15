@@ -16,10 +16,10 @@ import App from './App.vue'
 import { Header, Swipe, SwipeItem, Button } from 'mint-ui';
 // vue2.5需要导入css
 import 'mint-ui/lib/style.css';
+Vue.component(Header.name, Header);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Button.name, Button);
-Vue.component(Header.name, Header);
 // 导入MUI
 import './lib/mui/css/mui.min.css'
 import './lib/mui/css/iconfont.css'
