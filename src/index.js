@@ -10,6 +10,8 @@ import VueResource from 'vue-resource';
 Vue.use(VueResource)
 // 设置请求根路径
 Vue.http.options.root = 'http://www.liulongbin.top:3005'
+// 设置post提交表单数据格式（application/x-www—form—urlencoded）
+Vue.http.options.emulateJSON=true
 // 导入app组件
 import App from './App.vue'
 // 按需导入MintUI

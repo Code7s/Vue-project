@@ -717,6 +717,9 @@ Vue.component(Button.name, Button);
 Vue.filter('MDHms', function (dataStr, pattern = "MM-DD \n HH:mm:ss") {
   return moment(dataStr).format(pattern)
 })
+
+// 由于评论需要提交post请求，全局配置post提交表单数据格式（application/x-www—form—urlencoded）
+Vue.http.options.emulateJSON=true
 ```
 
 把Newsinfo.vue中的id值传给子组件:
@@ -733,8 +736,8 @@ tampalate:
 ``` html
 <div class="comment-box">
   <h3>发表评论:</h3>
-  <textarea placeholder="请输入评论内容(120字)..." maxlength="120"></textarea>
-  <mt-button class="mint-button mint-button--primary mint-button--large">评论</mt-button>
+  <textarea placeholder="请输入评论内容(120字)..." maxlength="120" v-model="msg"></textarea>
+  <mt-button class="mint-button mint-button--primary mint-button--large" @click="postComment">评论</mt-button>
   <div class="comment-list">
     <div class="cmt-item" v-for="comment in commentList" :key="comment.index">
       <p class="cmt-title">
@@ -789,6 +792,7 @@ export default {
   data() {
     return {
       commentList: [],
+      mag: '',
       pageIndex: 1
     };
   },
@@ -802,6 +806,28 @@ export default {
             console.log(this.commentList);
           } else {
             Toast("加载评论列表失败");
+          }
+        });
+    },
+    postComment() {
+      //判断评论内容是否为空
+      if (this.msg.trim().length === 0) {
+        return Toast("评论内容不能为空！");
+      }
+      this.$http
+        .post("api/postcomment/" + this.newsid, {
+          content: this.msg.trim()
+        })
+        .then(function(result) {
+          if (result.body.status === 0) {
+            //手动添加一个评论对象
+            var cmt = {
+              user_name: "code7s",
+              add_time: Date.now(),
+              content: this.msg.trim()
+            };
+            this.commentList.unshift(cmt);
+            this.msg = "";
           }
         });
     },
