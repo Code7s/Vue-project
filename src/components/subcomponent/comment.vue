@@ -12,6 +12,7 @@
         <div class="cmt-body">{{comment.content}}</div>
       </div>
     </div>
+    <mt-button class="mint-button mint-button--danger mint-button--large" @click="getMore">加载更多</mt-button>
   </div>
 </template>
 
@@ -31,12 +32,16 @@ export default {
         .get("api/getcomments/" + this.newsid + "?pageindex=" + this.pageIndex)
         .then(result => {
           if (result.body.status === 0) {
-            this.commentList = result.body.message;
+            this.commentList = this.commentList.concat(result.body.message);
             console.log(this.commentList);
           } else {
             Toast("加载评论列表失败");
           }
         });
+    },
+    getMore(){
+      this.pageIndex++;
+      this.getComments();
     }
   },
   props: ["newsid"],
@@ -67,6 +72,9 @@ export default {
         color: rgb(206, 206, 206);
       }
     }
+  }
+  .mint-button{
+    margin-bottom: 15px;
   }
 }
 </style>
