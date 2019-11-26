@@ -6439,7 +6439,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
     var CLASS_SEGMENTED_CONTROL_VERTICAL = 'mui-segmented-control-vertical';
     var CLASS_CONTROL_CONTENT = 'mui-control-content';
     var CLASS_TAB_BAR = 'mui-bar-tab';
-    var CLASS_TAB_ITEM = 'mui-tab-item';
+    var CLASS_TAB_ITEM = 'mui-tab-item-x';
     var CLASS_SLIDER_ITEM = 'mui-slider-item';
 
    var handle = function(event, target) {

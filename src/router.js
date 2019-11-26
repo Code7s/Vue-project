@@ -6,6 +6,7 @@ import ShopCar from './components/tabbar/ShopCar.vue'
 import Search from './components/tabbar/Search.vue'
 import News from './components/news/News.vue'
 import NewsInfo from './components/news/Newsinfo.vue'
+import PhotoList from './components/photos/PhotoList.vue'
 // 路由对象
 var routerObj = new VueRouter({
   routes: [
@@ -15,7 +16,8 @@ var routerObj = new VueRouter({
     { path: '/shopcar', component: ShopCar },
     { path: '/search', component: Search },
     { path: '/home/news', component: News },
-    { path: '/home/newsinfo/:id', component: NewsInfo }
+    { path: '/home/newsinfo/:id', component: NewsInfo },
+    { path: '/home/image', component: PhotoList }
   ],
   linkActiveClass: 'mui-active'// 覆盖默认路由选中类(router-link-active)
 })

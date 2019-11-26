@@ -846,6 +846,112 @@ export default {
 
 
 
+## 图片分享页
+
+在`src/components/photos`下创建` PhotoList.vue` 文件，然后配置路由：
+
+``` js
+import PhotoList from './components/photos/PhotoList.vue'
+// 在路由对象上添加以下配置：
+{ path: '/home/image', component: PhotoList }
+```
+
+编辑 PhotoList.vue:
+
+tamplate(引用MUI中的tab-webview-main.html):
+
+```html
+<template>
+  <div>
+    <div id="slider" class="mui-slider">
+      <div
+        id="sliderSegmentedControl"
+        class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted"
+      >
+        <div class="mui-scroll">
+          <a
+            class="mui-control-item mui-active"
+            href="#item1mobile"
+            data-wid="tab-top-subpage-1.html"
+          >全部</a>
+          <a class="mui-control-item" href="#item2mobile" data-wid="tab-top-subpage-2.html">家居生活</a>
+          <a class="mui-control-item" href="#item3mobile" data-wid="tab-top-subpage-3.html">摄影设计</a>
+          <a class="mui-control-item" href="#item4mobile" data-wid="tab-top-subpage-4.html">明星美女</a>
+          <a class="mui-control-item" href="#item5mobile" data-wid="tab-top-subpage-5.html">娱乐</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+```
+
+js:
+
+``` js
+<script>
+//导入mui.js
+import mui from "../../lib/mui/js/mui.js";
+export default {
+  data() {
+    return {};
+  },
+  mounted() {
+    //需要页面渲染完成再启动初始化scroll控件
+    // mui中使用区域滚动组件，需手动初始化scroll控件
+    mui(".mui-scroll-wrapper").scroll({
+      deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+    });
+  }
+};
+</script>
+```
+
+css:
+
+``` css
+<style>
+* {
+  touch-action: pan-y; /* 为了解决chrome滑动报错 */
+}
+</style>
+```
+
+
+
+1. 由于引入的mui.js中有非严格模式的代码，而 webpack默认是严格模式的，所以我们需要关闭严格模式：
+
+   下载插件：
+
+   ``` cmd
+    cnpm i babel-plugin-transform-remove-strict-mode -D
+   ```
+
+   配置`.babelrc`文件：
+
+   ``` markdown
+   {
+     "presets": ["env","stage-0"],
+     "plugins": ["transform-runtime","transform-remove-strict-mode"]
+   }
+   ```
+
+2. 功能完成后发现tabbar功能失效，原因是它的类名和引入的mui.js冲突,解决方案如下：
+
+   手动打开`src/lib/mui/js/mui.js` ,输入`Ctrl+F` 查找`mui-tab-item`字段
+
+   ``` js
+   // 将
+   var CLASS_TAB_ITEM = 'mui-tab-item';
+   // 改成
+   var CLASS_TAB_ITEM = 'mui-tab-item-x';
+   ```
+
+
+
+
+
+
+
 
 
 ## 上传到github
