@@ -5,23 +5,28 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 // 导入路由模块
 import routerObj from './router.js'
-//导入vue-resource
+// 导入vue-resource
 import VueResource from 'vue-resource';
 Vue.use(VueResource)
 // 设置请求根路径
 Vue.http.options.root = 'http://www.liulongbin.top:3005'
 // 设置post提交表单数据格式（application/x-www—form—urlencoded）
-Vue.http.options.emulateJSON=true
+Vue.http.options.emulateJSON = true
 // 导入app组件
 import App from './App.vue'
+
+/* MintUI */
 // 按需导入MintUI
-import { Header, Swipe, SwipeItem, Button } from 'mint-ui';
+import { Header, Swipe, SwipeItem, Button, Lazyload } from 'mint-ui';
 // vue2.5需要导入css
 import 'mint-ui/lib/style.css';
 Vue.component(Header.name, Header);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Button.name, Button);
+Vue.use(Lazyload);
+
+/* MUI */
 // 导入MUI
 import './lib/mui/css/mui.min.css'
 import './lib/mui/css/iconfont.css'

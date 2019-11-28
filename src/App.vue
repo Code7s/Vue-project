@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!-- header -->
-    <mt-header fixed title="Code7s Vue项目"></mt-header>
+    <mt-header id="header" fixed title="Code7s Vue项目"></mt-header>
     <transition>
       <router-view></router-view>
     </transition>
@@ -33,6 +33,9 @@ export default {};
 </script>
 
 <style scoped>
+#header{
+  z-index: 10000;
+}
 .container {
   padding-top: 40px;
   overflow-x: hidden;

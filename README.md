@@ -152,7 +152,7 @@ Vue.component(Header.name, Header);
 ```vue
 <template>
   <div class="container">
-    <mt-header fixed title="Code7s Vue项目"></mt-header>
+    <mt-header id="header" fixed title="Code7s Vue项目"></mt-header>
   </div>
 </template>
 ```
@@ -858,11 +858,12 @@ import PhotoList from './components/photos/PhotoList.vue'
 
 编辑 PhotoList.vue:
 
-tamplate(引用MUI中的tab-webview-main.html):
+tamplate:
 
 ```html
 <template>
   <div>
+    <!-- 引用MUI中的tab-webview-main.html -->
     <div id="slider" class="mui-slider">
       <div
         id="sliderSegmentedControl"
@@ -870,17 +871,24 @@ tamplate(引用MUI中的tab-webview-main.html):
       >
         <div class="mui-scroll">
           <a
-            class="mui-control-item mui-active"
-            href="#item1mobile"
-            data-wid="tab-top-subpage-1.html"
-          >全部</a>
-          <a class="mui-control-item" href="#item2mobile" data-wid="tab-top-subpage-2.html">家居生活</a>
-          <a class="mui-control-item" href="#item3mobile" data-wid="tab-top-subpage-3.html">摄影设计</a>
-          <a class="mui-control-item" href="#item4mobile" data-wid="tab-top-subpage-4.html">明星美女</a>
-          <a class="mui-control-item" href="#item5mobile" data-wid="tab-top-subpage-5.html">娱乐</a>
+            :class="['mui-control-item',category.id==0?'mui-active':'']"
+            v-for="category in allcate"
+            :key="category.id"
+            @click="getImgList(category.id)"
+          >{{category.title}}</a>
         </div>
       </div>
     </div>
+    <!-- 引用MintUI中的Lazy load -->
+    <ul class="imglist">
+      <li v-for="imgs in imgList" :key="imgs.id">
+        <img v-lazy="imgs.img_url" />
+        <div class="img-title">
+          <h4>{{imgs.title}}</h4>
+          <p>{{imgs.zhaiyao}}</p>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 ```
@@ -891,9 +899,39 @@ js:
 <script>
 //导入mui.js
 import mui from "../../lib/mui/js/mui.js";
+import { Toast } from "mint-ui";
 export default {
   data() {
-    return {};
+    return {
+      allcate: [],
+      imgList: []
+    };
+  },
+  methods: {
+    getCategory() {
+      // 获取全部分类
+      this.$http.get("api/getimgcategory").then(result => {
+        if (result.body.status === 0) {
+          result.body.message.unshift({ title: "全部", id: 0 }); //添加全部分类，id为0
+          this.allcate = result.body.message;
+          // console.log(result.body);
+        } else {
+          Toast("图片分类获取失败！");
+        }
+      });
+    },
+    getImgList(cateid) {
+      // 获取图片列表
+      this.$http.get("api/getimages/" + cateid).then(result => {
+        if (result.body.status == 0) {
+          this.imgList = result.body.message;
+        }
+      });
+    }
+  },
+  created() {
+    this.getCategory();
+    this.getImgList(0); //先获取全部分类
   },
   mounted() {
     //需要页面渲染完成再启动初始化scroll控件
@@ -908,17 +946,66 @@ export default {
 
 css:
 
-``` css
-<style>
+``` scss
+<style lang="scss" scoped>
 * {
-  touch-action: pan-y; /* 为了解决chrome滑动报错 */
+  touch-action: pan-y;
+}
+.imglist {
+  list-style: none;
+  margin: 0;
+  padding: 10px 10px 50px;
+  li {
+    background-color: #ccc;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px rgb(100, 100, 100);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    img {
+      width: 100%;
+      vertical-align: middle;
+      margin: 0 auto;
+      position: relative;
+    }
+    .img-title {
+      width: 100%;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.4);
+      // padding: 5px; 
+      //这里为了解决不同分辨率设备下最后一行文字可能显示不全的情况，把padding改为border并设置overflow：hidden，border的透明度必须为0
+      border: 5px solid rgba(0, 0, 0, 0);
+      overflow: hidden;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      max-height: 88px;
+      h4 {
+        line-height: 20px;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      p {
+        color: #fff;
+        font-size: 12px;
+        line-height: 16px;
+        margin: 0;
+      }
+    }
+  }
 }
 </style>
 ```
 
 
 
-1. 由于引入的mui.js中有非严格模式的代码，而 webpack默认是严格模式的，所以我们需要关闭严格模式：
+### 过程中出现的问题
+
+1. 报错：`Uncaught TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode functions or the arguments objects for calls to them`
+
+   是由于引入的mui.js中有非严格模式的代码，而 webpack默认是严格模式的，所以我们需要关闭严格模式：
 
    下载插件：
 
@@ -946,9 +1033,23 @@ css:
    var CLASS_TAB_ITEM = 'mui-tab-item-x';
    ```
 
+3. 图片懒加载需要在index.js中导入MintUI中的Lazyload：
 
+   ``` js
+   // 添加Lazyload
+   import { Header, Swipe, SwipeItem, Button, Lazyload } from 'mint-ui';
+   Vue.use(Lazyload);
+   ```
 
+4. 往上滑动时分类列表挡在头部上面。需要给头部添加层级 `App.vue`：
 
+   ``` css
+   #header{
+     z-index: 10000;
+   }
+   ```
+
+   
 
 
 
