@@ -26,6 +26,10 @@ Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Button.name, Button);
 Vue.use(Lazyload);
 
+// 导入缩略图包
+import VuePreview from 'vue2-preview';
+Vue.use(VuePreview);
+
 /* MUI */
 // 导入MUI
 import './lib/mui/css/mui.min.css'
