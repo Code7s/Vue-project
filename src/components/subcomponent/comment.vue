@@ -24,13 +24,14 @@ export default {
     return {
       commentList: [],
       msg: "",
-      pageIndex: 1
+      pageIndex: 1,
+      id: this.$route.params.id
     };
   },
   methods: {
     getComments() {
       this.$http
-        .get("api/getcomments/" + this.newsid + "?pageindex=" + this.pageIndex)
+        .get("api/getcomments/" + this.id+ "?pageindex=" + this.pageIndex)
         .then(result => {
           if (result.body.status === 0) {
             this.commentList = this.commentList.concat(result.body.message);
@@ -46,7 +47,7 @@ export default {
         return Toast("评论内容不能为空！");
       }
       this.$http
-        .post("api/postcomment/" + this.newsid, {
+        .post("api/postcomment/" + this.id, {
           content: this.msg.trim()
         })
         .then(function(result) {
@@ -76,7 +77,9 @@ export default {
 
 <style lang="scss" scoped>
 .comment-box {
+  padding-bottom: 15px;
   h3 {
+    color: #666;
     font-size: 16px;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
@@ -86,6 +89,7 @@ export default {
   }
   .comment-list {
     .cmt-item {
+      color: #666;
       padding: 10px 0;
       border-bottom: 1px dashed #eee;
     }
@@ -97,7 +101,7 @@ export default {
     }
   }
   .mint-button {
-    margin-bottom: 15px;
+    margin: 15px 0;
   }
 }
 </style>
