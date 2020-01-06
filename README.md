@@ -368,20 +368,19 @@ Vue.use(VueResource)
 Vue.http.options.root = 'http://www.liulongbin.top:3005'
 ```
 
-编辑Home.vue
+
+
+在`src/components/subcomponent/`下创建swiper组件，并在Home.vue中引入：
 
 ``` html
 <template>
   <div>
-    <mt-swipe :auto="3000">
-      <mt-swipe-item v-for="item in bannerList" :key="item.id">
-        <img :src="item.img" alt="">
-      </mt-swipe-item>
-    </mt-swipe>
+    <swiper :bannerList="bannerList"></swiper>
   </div>
 </template>
 <script>
-import{ Toast } from 'mint-ui'
+import { Toast } from "mint-ui";
+import swiper from "../subcomponent/swiper.vue";
 export default {
   data() {
     return {
@@ -390,36 +389,60 @@ export default {
   },
   methods: {
     getBanner() {
-      this.$http
-        .get("api/getlunbo")
-        .then(result => {
-          if (result.body.status===0) {
-            this.bannerList=result.body.message
-          }else{
-            Toast('加载轮播图失败')
-          }
-        });
+      this.$http.get("api/getlunbo").then(result => {
+        if (result.body.status === 0) {
+          this.bannerList = result.body.message;
+        } else {
+          Toast("加载轮播图失败");
+        }
+      });
     }
+  },
+  components: {
+    swiper
   },
   created() {
     this.getBanner();
   }
 };
 </script>
+```
+
+
+
+编辑swiper.vue:
+
+``` html
+<template>
+  <mt-swipe :auto="3000">
+    <!-- 谁使用此子组件谁传递bannerList -->
+    <mt-swipe-item v-for="item in bannerList" :key="item.id">
+      <img :src="item.img" />
+    </mt-swipe-item>
+  </mt-swipe>
+</template>
+
+<script>
+export default {
+  props:['bannerList']
+};
+</script>
 <style lang="scss" scoped>
-.mint-swipe{
+.mint-swipe {
   height: 200px;
-  .mint-swipe-item{
-    img{
+  .mint-swipe-item {
+    img {
       width: 100%;
       height: 100%;
-    }  
+    }
   }
 }
 </style>
 ```
 
-### 六宫格
+
+
+###六宫格
 
 在Home.vue中添加(依赖于MUI):
 
@@ -1336,6 +1359,35 @@ export default {
     }
   }
 };
+</script>
+```
+
+
+
+### 商品购买详情页
+
+按以下路径新建`CommodityInfo.vue` 文件并配置路由：
+
+``` js
+import CommodityInfo from './components/buy/CommodityInfo.vue'
+// 下面代码添加到路由列表中
+{ path: '/home/commodityinfo/:id', component: CommodityInfo }
+```
+
+编辑Commodity.vue实现跳转到详情页：
+
+``` html
+<!-- 在class为comm-item的div上添加点击事件goDetail，并在methods中定义该方法 -->
+<div class="comm-item" v-for="comm in commodityList" :key="comm.id" @click="goDetail(comm.id)">
+  
+<script>
+//添加到methods中
+goDetail(id){
+  // 注意区分:
+  // $router :  路由导航对象，用来实现路由前进后退跳转
+  // $route : 路由参数对象，用来传递路由参数
+  this.$router.push({path: '/home/commodityinfo/'+id})
+}
 </script>
 ```
 

@@ -1,6 +1,8 @@
 <template>
   <div class="commodity-container">
-    <div class="comm-item" v-for="comm in commodityList" :key="comm.id">
+    <!-- 在class为comm-item的div上添加点击事件 -->
+    <div class="comm-item" v-for="comm in commodityList" :key="comm.id" @click="goDetail(comm.id)">
+    <!-- 这里除了用router-link实现跳转之外还可以使用$router.push()的方式实现 -->
       <img :src="comm.img_url" :alt="comm.zhaiyao" />
       <h3 class="comm-title">{{comm.title}}</h3>
       <div class="price">
@@ -35,7 +37,7 @@ export default {
         .get("api/getgoods?pageindex=" + this.pageIndex)
         .then(result => {
           if (result.body.status == 0) {
-            console.log(result.body.message);
+            // console.log(result.body.message);
             this.commodityList = this.commodityList.concat(result.body.message);
           }
         });
@@ -43,12 +45,18 @@ export default {
     getMore() {
       this.pageIndex++;
       this.getCommodityList();
+    },
+    goDetail(id){
+      // 注意区分:
+      // $router :  路由导航对象，用来实现路由前进后退跳转
+      // $route : 路由参数对象，用来传递路由参数
+      this.$router.push({path: '/home/commodityinfo/'+id})
     }
   }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .commodity-container {
   display: flex;
   justify-content: space-between;
