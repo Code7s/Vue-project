@@ -45,6 +45,10 @@ export default {
 <style lang="scss" scoped>
 .mui-table-view {
   padding-bottom: 50px;
+  .mui-table-view-cell:after {
+    left: 8px;
+    right: 8px;
+  }
   .mui-media-body {
     h3 {
       font-size: 14px;
