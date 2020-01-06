@@ -1,6 +1,6 @@
 <template>
   <div>
-    <swiper :bannerList="bannerList"></swiper>
+    <swiper :bannerList="bannerList" :isfull="true"></swiper>
     <ul id="sub-nav" class="mui-table-view mui-grid-view mui-grid-9">
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
         <router-link to="/home/news">

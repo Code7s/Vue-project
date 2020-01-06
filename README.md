@@ -119,7 +119,7 @@ module.exports = {
 }
 ```
 
-运行 `cnpm i` 后在index.js中导入Vue,如果存在包之间版本不对应请看 [webpack总结](https://www.code7s.com/20190907/webpack学习总结/)
+运行 `cnpm i` 后在index.js中导入Vue,如果存在包之间版本不对应请看 [webpack学习总结](https://www.code7s.com/webpack学习总结/)
 
 ``` js
 // 导入Vue
@@ -375,7 +375,7 @@ Vue.http.options.root = 'http://www.liulongbin.top:3005'
 ``` html
 <template>
   <div>
-    <swiper :bannerList="bannerList"></swiper>
+    <swiper :bannerList="bannerList" :isfull="true"></swiper>
   </div>
 </template>
 <script>
@@ -417,23 +417,26 @@ export default {
   <mt-swipe :auto="3000">
     <!-- 谁使用此子组件谁传递bannerList -->
     <mt-swipe-item v-for="item in bannerList" :key="item.id">
-      <img :src="item.img" />
+      <img :src="item.img" :class="{full:isfull}" />
     </mt-swipe-item>
   </mt-swipe>
 </template>
 
 <script>
 export default {
-  props:['bannerList']
+  props:['bannerList','isfull']
 };
 </script>
 <style lang="scss" scoped>
 .mint-swipe {
   height: 200px;
   .mint-swipe-item {
+    text-align: center;
     img {
-      width: 100%;
       height: 100%;
+    }
+    .full{
+      width:100%;
     }
   }
 }
@@ -754,7 +757,7 @@ Vue.http.options.emulateJSON=true
 
 编辑comment.vue:
 
-tampalate:
+tempalate:
 
 ``` html
 <div class="comment-box">
@@ -886,7 +889,7 @@ import PhotoList from './components/photos/PhotoList.vue'
 
 编辑 PhotoList.vue:
 
-tamplate:
+template:
 
 ```html
 <template>
@@ -1250,7 +1253,7 @@ import Commodity from './components/buy/Commodity.vue'
 
 编辑`Commodity.vue` :
 
-tamplate:
+template:
 
 ``` html
 <template>
@@ -1388,6 +1391,151 @@ goDetail(id){
   // $route : 路由参数对象，用来传递路由参数
   this.$router.push({path: '/home/commodityinfo/'+id})
 }
+</script>
+```
+
+创建选择购买数量子组件buy_numbox.vue:
+
+``` html
+<template>
+  <div class="mui-numbox" data-numbox-step="1" data-numbox-min="0" data-numbox-max="100">
+    <button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+    <input class="mui-numbox-input" type="number" value="1" />
+    <button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+  </div>
+</template>
+
+<script>
+import mui from "../../lib/mui/js/mui.js";
+export default {
+  mounted(){
+    mui('.mui-numbox').numbox()
+  }
+};
+</script>
+```
+
+编辑 CommodityInfo.vue：
+
+template:
+
+``` html
+<template>
+  <div class="buy-container">
+    <div class="mui-card">
+      <div class="mui-card-content">
+        <div class="mui-card-content-inner">
+          <swiper :bannerList="bannerList" :isfull="false"></swiper>
+        </div>
+      </div>
+    </div>
+    <div class="mui-card">
+      <div class="mui-card-header">{{info.title}}</div>
+      <div class="mui-card-content">
+        <div class="mui-card-content-inner">
+          <p>
+            售价：
+            <span class="new-price">￥{{info.sell_price}}</span>&nbsp;&nbsp;
+            <del>￥{{info.market_price}}</del>
+          </p>
+          <p>
+            购买数量：
+            <numbox></numbox>
+          </p>
+          <mt-button type="danger" size="small">立即购买</mt-button>
+          <mt-button type="primary" size="small">加入购物车</mt-button>
+        </div>
+      </div>
+      <div class="mui-card-footer">页脚</div>
+    </div>
+    <div class="mui-card">
+      <div class="mui-card-header">商品参数</div>
+      <div class="mui-card-content">
+        <div class="mui-card-content-inner">
+          <p>商品货号：{{info.goods_no}}</p>
+          <p>库存信息：{{info.stock_quantity}}</p>
+          <p>上架时间：{{info.add_time|MDHms}}</p>
+        </div>
+      </div>
+      <div class="mui-card-footer">
+        <mt-button type="primary" size="large" plain>图文介绍</mt-button>
+        <mt-button type="danger" size="large" plain>商品评论</mt-button>
+      </div>
+    </div>
+  </div>
+</template>
+```
+
+Css:
+
+``` scss
+<style lang="scss" scoped>
+.buy-container {
+  background-color: #eee;
+  overflow: hidden;
+  padding-bottom: 50px;
+  .mint-swipe {
+    height: 200px;
+    .mint-swipe-item {
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  .new-price {
+    color: red;
+    font-size: 20px;
+  }
+  .mui-card-footer {
+    display: block;
+    button {
+      margin-bottom: 10px;
+    }
+  }
+}
+</style>
+```
+
+js:
+
+``` js
+<script>
+import swiper from "../subcomponent/swiper.vue";
+import numbox from "../subcomponent/buy_numbox.vue";
+export default {
+  data() {
+    return {
+      id: this.$route.params.id,
+      bannerList: [],
+      info: []
+    };
+  },
+  created() {
+    this.getBanner();
+    this.getInfo();
+  },
+  methods: {
+    getBanner() {
+      this.$http.get("api/getthumimages/" + this.id).then(result => {
+        if (result.body.status === 0) {
+          this.bannerList = result.body.message;
+        }
+      });
+    },
+    getInfo() {
+      this.$http.get("api/goods/getinfo/" + this.id).then(result => {
+        if (result.body.status === 0) {
+          this.info = result.body.message[0];
+        }
+      });
+    }
+  },
+  components: {
+    swiper,
+    numbox
+  }
+};
 </script>
 ```
 

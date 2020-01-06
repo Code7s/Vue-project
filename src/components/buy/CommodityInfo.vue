@@ -3,45 +3,80 @@
     <div class="mui-card">
       <div class="mui-card-content">
         <div class="mui-card-content-inner">
-          <mt-swipe :auto="3000">
-            <mt-swipe-item v-for="picture in bannerList" :key="picture.index">
-              <img :src="picture.src" alt />
-            </mt-swipe-item>
-          </mt-swipe>
+          <swiper :bannerList="bannerList" :isfull="false"></swiper>
         </div>
       </div>
     </div>
     <div class="mui-card">
-      <div class="mui-card-header">页眉</div>
+      <div class="mui-card-header">{{info.title}}</div>
       <div class="mui-card-content">
-        <div class="mui-card-content-inner">包含页眉页脚的卡片，页眉常用来显示面板标题，页脚用来显示额外信息或支持的操作（比如点赞、评论等）</div>
+        <div class="mui-card-content-inner">
+          <p>
+            售价：
+            <span class="new-price">￥{{info.sell_price}}</span>&nbsp;&nbsp;
+            <del>￥{{info.market_price}}</del>
+          </p>
+          <p>
+            购买数量：
+            <numbox></numbox>
+          </p>
+          <mt-button type="danger" size="small">立即购买</mt-button>
+          <mt-button type="primary" size="small">加入购物车</mt-button>
+        </div>
       </div>
       <div class="mui-card-footer">页脚</div>
+    </div>
+    <div class="mui-card">
+      <div class="mui-card-header">商品参数</div>
+      <div class="mui-card-content">
+        <div class="mui-card-content-inner">
+          <p>商品货号：{{info.goods_no}}</p>
+          <p>库存信息：{{info.stock_quantity}}</p>
+          <p>上架时间：{{info.add_time|MDHms}}</p>
+        </div>
+      </div>
+      <div class="mui-card-footer">
+        <mt-button type="primary" size="large" plain>图文介绍</mt-button>
+        <mt-button type="danger" size="large" plain>商品评论</mt-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import swiper from "../subcomponent/swiper.vue";
+import numbox from "../subcomponent/buy_numbox.vue";
 export default {
   data() {
     return {
       id: this.$route.params.id,
-      bannerList: []
+      bannerList: [],
+      info: []
     };
   },
-  createdmo() {
+  created() {
     this.getBanner();
+    this.getInfo();
   },
   methods: {
     getBanner() {
       this.$http.get("api/getthumimages/" + this.id).then(result => {
-        if (result.body.status == 0) {
+        if (result.body.status === 0) {
           this.bannerList = result.body.message;
-          console.log(result.body);
-        } else {
+        }
+      });
+    },
+    getInfo() {
+      this.$http.get("api/goods/getinfo/" + this.id).then(result => {
+        if (result.body.status === 0) {
+          this.info = result.body.message[0];
         }
       });
     }
+  },
+  components: {
+    swiper,
+    numbox
   }
 };
 </script>
@@ -50,6 +85,7 @@ export default {
 .buy-container {
   background-color: #eee;
   overflow: hidden;
+  padding-bottom: 50px;
   .mint-swipe {
     height: 200px;
     .mint-swipe-item {
@@ -59,5 +95,15 @@ export default {
       }
     }
   }
+  .new-price {
+    color: red;
+    font-size: 20px;
+  }
+  .mui-card-footer {
+    display: block;
+    button {
+      margin-bottom: 10px;
+    }
+  }
 }
-</style>>
+</style>
