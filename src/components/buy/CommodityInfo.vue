@@ -24,7 +24,6 @@
           <mt-button type="primary" size="small">加入购物车</mt-button>
         </div>
       </div>
-      <div class="mui-card-footer">页脚</div>
     </div>
     <div class="mui-card">
       <div class="mui-card-header">商品参数</div>
@@ -36,8 +35,8 @@
         </div>
       </div>
       <div class="mui-card-footer">
-        <mt-button type="primary" size="large" plain>图文介绍</mt-button>
-        <mt-button type="danger" size="large" plain>商品评论</mt-button>
+        <mt-button type="primary" size="large" @click="gointroduce(id)" plain>图文介绍</mt-button>
+        <mt-button type="danger" size="large" @click="gobuycomment(id)" plain>商品评论</mt-button>
       </div>
     </div>
   </div>
@@ -72,6 +71,12 @@ export default {
           this.info = result.body.message[0];
         }
       });
+    },
+    gointroduce(id) {
+      this.$router.push({ path: "/home/buyintorduce/" + id });
+    },
+    gobuycomment(id) {
+      this.$router.push({ path: "/home/buycomment/" + id });
     }
   },
   components: {
