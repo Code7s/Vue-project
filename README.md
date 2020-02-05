@@ -783,7 +783,10 @@ style:
 <style lang="scss" scoped>
 .comment-box {
   h3 {
-    font-size: 16px;
+    color: black;
+    font-size: 17px;
+    font-weight: normal;
+    font-family: 'Helvetica Neue',Helvetica,sans-serif;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
   }
@@ -849,7 +852,7 @@ export default {
           if (result.body.status === 0) {
             //手动添加一个评论对象
             var cmt = {
-              user_name: "code7s",
+              user_name: "匿名用户",
               add_time: Date.now(),
               content: this.msg.trim()
             };
@@ -1446,7 +1449,6 @@ template:
           <mt-button type="primary" size="small">加入购物车</mt-button>
         </div>
       </div>
-      <div class="mui-card-footer">页脚</div>
     </div>
     <div class="mui-card">
       <div class="mui-card-header">商品参数</div>
@@ -1457,10 +1459,13 @@ template:
           <p>上架时间：{{info.add_time|MDHms}}</p>
         </div>
       </div>
-      <div class="mui-card-footer">
-        <mt-button type="primary" size="large" plain>图文介绍</mt-button>
-        <mt-button type="danger" size="large" plain>商品评论</mt-button>
-      </div>
+    </div>
+    <div class="mui-card">
+      <div class="mui-card-header">详情介绍</div>
+      <!--详情介绍组件-->
+    </div>
+    <div class="mui-card m-comment">
+      <!--评论组件-->
     </div>
   </div>
 </template>
@@ -1487,11 +1492,8 @@ Css:
     color: red;
     font-size: 20px;
   }
-  .mui-card-footer {
-    display: block;
-    button {
-      margin-bottom: 10px;
-    }
+  .m-comment{
+    padding: 0 5px;
   }
 }
 </style>
@@ -1541,40 +1543,20 @@ export default {
 
 
 
-### 图文介绍页、商品评论页
+#### 详情介绍、商品评论
 
-在商品购买详情页的按钮上添加点击事件：
-
-``` html
-<mt-button type="primary" size="large" @click="gointroduce(id)" plain>图文介绍</mt-button>
-<mt-button type="danger" size="large" @click="gobuycomment(id)" plain>商品评论</mt-button>
-```
-
-在methods中添加上述函数：
-
-``` js
-gointroduce(id) {
-  this.$router.push({ path: "/home/buyintorduce/" + id });
-},
-gobuycomment(id) {
-  this.$router.push({ path: "/home/buycomment/" + id });
-}
-```
-
-创建BuyIntroduce.vue和BuyComment.vue，配置路由：
+创建BuyIntroduce.vue，配置路由：
 
 ```js
-import BuyIntorduce from './components/buy/BuyIntroduce.vue'
-import BuyComment from './components/buy/BuyComment.vue'
+import BuyIntorduce from './components/buy/BuyIntroduce.vue
 
 // 下面代码添加到路由列表中
-{ path: '/home/buyintorduce/:id', component: BuyIntorduce },
-{ path: '/home/buycomment/:id', component: BuyComment }
+{ path: '/home/buyintorduce/:id', component: BuyIntorduce }
 ```
 
 编辑 BuyIntroduce.vue：
 
-``` html
+``` scss
 <template>
   <div class="introduce-container">
     <h3 class="title">{{introduce.title}}</h3>
@@ -1640,6 +1622,25 @@ export default {
   }
 }
 </style>
+```
+
+在CommodityInfo.vue中导入组件：
+
+```js
+import buyintorduce from "../buy/BuyIntroduce.vue";
+import buycomment from "../subcomponent/comment.vue";
+```
+
+导入完成后在components里注册这两组件，然后添加到template里：
+
+``` html
+<div class="mui-card">
+  <div class="mui-card-header">详情介绍</div>
+  <buyintorduce></buyintorduce>
+</div>
+<div class="mui-card m-comment">
+  <buycomment :id="id"></buycomment>
+</div>
 ```
 
 

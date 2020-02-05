@@ -34,10 +34,13 @@
           <p>上架时间：{{info.add_time|MDHms}}</p>
         </div>
       </div>
-      <div class="mui-card-footer">
-        <mt-button type="primary" size="large" @click="gointroduce(id)" plain>图文介绍</mt-button>
-        <mt-button type="danger" size="large" @click="gobuycomment(id)" plain>商品评论</mt-button>
-      </div>
+    </div>
+    <div class="mui-card">
+      <div class="mui-card-header">详情介绍</div>
+      <buyintorduce></buyintorduce>
+    </div>
+    <div class="mui-card m-comment">
+      <buycomment :id="id"></buycomment>
     </div>
   </div>
 </template>
@@ -45,6 +48,8 @@
 <script>
 import swiper from "../subcomponent/swiper.vue";
 import numbox from "../subcomponent/buy_numbox.vue";
+import buyintorduce from "../buy/BuyIntroduce.vue";
+import buycomment from "../subcomponent/comment.vue";
 export default {
   data() {
     return {
@@ -71,17 +76,13 @@ export default {
           this.info = result.body.message[0];
         }
       });
-    },
-    gointroduce(id) {
-      this.$router.push({ path: "/home/buyintorduce/" + id });
-    },
-    gobuycomment(id) {
-      this.$router.push({ path: "/home/buycomment/" + id });
     }
   },
   components: {
     swiper,
-    numbox
+    numbox,
+    buyintorduce,
+    buycomment
   }
 };
 </script>
@@ -104,11 +105,8 @@ export default {
     color: red;
     font-size: 20px;
   }
-  .mui-card-footer {
-    display: block;
-    button {
-      margin-bottom: 10px;
-    }
+  .m-comment{
+    padding: 0 5px;
   }
 }
 </style>

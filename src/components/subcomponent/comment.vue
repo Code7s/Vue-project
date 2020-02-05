@@ -54,7 +54,7 @@ export default {
           if (result.body.status === 0) {
             //手动添加一个评论对象
             var cmt = {
-              user_name: "code7s",
+              user_name: "匿名用户",
               add_time: Date.now(),
               content: this.msg.trim()
             };
@@ -79,8 +79,10 @@ export default {
 .comment-box {
   padding-bottom: 15px;
   h3 {
-    color: #666;
-    font-size: 16px;
+    color: black;
+    font-size: 17px;
+    font-weight: normal;
+    font-family: 'Helvetica Neue',Helvetica,sans-serif;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
   }
