@@ -18,7 +18,8 @@
           </p>
           <p>
             购买数量：
-            <numbox></numbox>
+            <numbox @countChange="getNumboxCount" :max="info.stock_quantity"></numbox>
+            <!-- 将库存两作为最大值传给子组件 -->
           </p>
           <mt-button type="danger" size="small">立即购买</mt-button>
           <mt-button type="primary" size="small" @click="ballFlag=!ballFlag">加入购物车</mt-button>
@@ -59,7 +60,8 @@ export default {
       id: this.$route.params.id,
       bannerList: [],
       info: [],
-      ballFlag: false
+      ballFlag: false,
+      count: 1 //保存选择器的值
     };
   },
   created() {
@@ -86,12 +88,14 @@ export default {
     },
     enter(el, done) {
       // 获取小球初始位置
-      const ballPosition=this.$refs.ball.getBoundingClientRect();
+      const ballPosition = this.$refs.ball.getBoundingClientRect();
       // 获取小球结束位置
-      const badgePosition=document.getElementById("badge").getBoundingClientRect();
+      const badgePosition = document
+        .getElementById("badge")
+        .getBoundingClientRect();
 
-      const xDist=badgePosition.left-ballPosition.left;
-      const yDist=badgePosition.top-ballPosition.top;
+      const xDist = badgePosition.left - ballPosition.left;
+      const yDist = badgePosition.top - ballPosition.top;
       el.offsetWidth;
       el.style.transform = `translate(${xDist}px,${yDist}px)`;
       el.style.transition = "all .5s cubic-bezier(.4,-0.3,1,.68)";
@@ -99,6 +103,10 @@ export default {
     },
     afterEnter(el) {
       this.ballFlag = !this.ballFlag;
+    },
+    getNumboxCount(data) {
+      this.count = data;
+      //console.log(this.count);
     }
   },
   components: {
