@@ -1643,6 +1643,72 @@ import buycomment from "../subcomponent/comment.vue";
 </div>
 ```
 
+#### 加入购物车小球
+
+在app.vue中给小球添加id为badge:
+
+``` html
+<span id="badge" class="mui-badge">0</span>
+```
+
+在CommodityInfo.vue加入购物车按钮上添加点击事件：
+
+``` html
+<mt-button type="primary" size="small" @click="ballFlag=!ballFlag">加入购物车</mt-button>
+<!--在  
+	</div>
+</template>之前添加小球动画：
+-->
+<transition @before-enter="beforEnter" @enter="enter" @after-enter="afterEnter">
+  <div class="ball" v-show="ballFlag" ref="ball">0</div>
+</transition>
+```
+
+给小球添加样式:
+
+``` css
+.ball {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background-color: red;
+  font-size: 10px;
+  line-height: 19px;
+  text-align: center;
+  color: #fff;
+  position: absolute;
+  left: 150px;
+  top: 410px;
+  z-index: 99;
+}
+```
+
+js:
+
+``` js
+//在data里添加属性
+ballFlag: false;
+//在methods添加动画钩子函数
+beforEnter(el) {
+  el.style.transform = "translate(0,0)";
+},
+enter(el, done) {
+  // 获取小球初始位置
+  const ballPosition=this.$refs.ball.getBoundingClientRect();
+  // 获取小球结束位置
+  const badgePosition=document.getElementById("badge").getBoundingClientRect();
+  const xDist=badgePosition.left-ballPosition.left;
+  const yDist=badgePosition.top-ballPosition.top;
+  el.offsetWidth;
+  el.style.transform = `translate(${xDist}px,${yDist}px)`;
+  el.style.transition = "all .5s cubic-bezier(.4,-0.3,1,.68)";
+  done();
+},
+afterEnter(el) {
+  this.ballFlag = !this.ballFlag;
+}
+```
+
 
 
 ## 上传到github

@@ -16,7 +16,7 @@
       </router-link>
       <router-link class="mui-tab-item" to="/shopcar">
         <span class="mui-icon iconfont icon-gouwuche">
-          <span class="mui-badge">9</span>
+          <span id="badge" class="mui-badge">9</span>
         </span>
         <span class="mui-tab-label">购物车</span>
       </router-link>

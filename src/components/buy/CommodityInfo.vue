@@ -21,7 +21,7 @@
             <numbox></numbox>
           </p>
           <mt-button type="danger" size="small">立即购买</mt-button>
-          <mt-button type="primary" size="small">加入购物车</mt-button>
+          <mt-button type="primary" size="small" @click="ballFlag=!ballFlag">加入购物车</mt-button>
         </div>
       </div>
     </div>
@@ -42,6 +42,9 @@
     <div class="mui-card m-comment">
       <buycomment :id="id"></buycomment>
     </div>
+    <transition @before-enter="beforEnter" @enter="enter" @after-enter="afterEnter">
+      <div class="ball" v-show="ballFlag" ref="ball">0</div>
+    </transition>
   </div>
 </template>
 
@@ -55,7 +58,8 @@ export default {
     return {
       id: this.$route.params.id,
       bannerList: [],
-      info: []
+      info: [],
+      ballFlag: false
     };
   },
   created() {
@@ -76,6 +80,25 @@ export default {
           this.info = result.body.message[0];
         }
       });
+    },
+    beforEnter(el) {
+      el.style.transform = "translate(0,0)";
+    },
+    enter(el, done) {
+      // 获取小球初始位置
+      const ballPosition=this.$refs.ball.getBoundingClientRect();
+      // 获取小球结束位置
+      const badgePosition=document.getElementById("badge").getBoundingClientRect();
+
+      const xDist=badgePosition.left-ballPosition.left;
+      const yDist=badgePosition.top-ballPosition.top;
+      el.offsetWidth;
+      el.style.transform = `translate(${xDist}px,${yDist}px)`;
+      el.style.transition = "all .5s cubic-bezier(.4,-0.3,1,.68)";
+      done();
+    },
+    afterEnter(el) {
+      this.ballFlag = !this.ballFlag;
     }
   },
   components: {
@@ -105,8 +128,23 @@ export default {
     color: red;
     font-size: 20px;
   }
-  .m-comment{
+  .m-comment {
     padding: 0 5px;
+  }
+  // 给小球添加样式
+  .ball {
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background-color: red;
+    font-size: 10px;
+    line-height: 19px;
+    text-align: center;
+    color: #fff;
+    position: absolute;
+    left: 150px;
+    top: 410px;
+    z-index: 99;
   }
 }
 </style>
