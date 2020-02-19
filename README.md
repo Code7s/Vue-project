@@ -1711,6 +1711,45 @@ afterEnter(el) {
 
 **由于提高效率，其它页面笔记直接在源码中注释**
 
+
+
+## vuex
+
+安装：
+
+`cnpm i vuex -S `
+
+导入：
+
+```js
+import Vuex from 'vuex';
+Vue.use(Vuex)
+var store=new Vuex.Store({
+  state:{//相当于组件当中的data,用来存储数据
+    
+  },
+  mutations:{//相当于组件中的methods，用来操作，修改数据
+    //子组件调用mutations里的方法必须使用this.store.comit(fn,arg)
+  },
+  getters:{//类似于vue实例中的计算属性
+    //getters不会修改原有的数据，只是提供一个新的数据
+  }
+})
+```
+
+最后挂载到vm实例上：
+
+```js
+vm=new Vue({
+  el: '#id',
+  store
+})
+```
+
+
+
+
+
 ## 上传到github
 
 使用`.gitgonre`屏蔽以下文件:

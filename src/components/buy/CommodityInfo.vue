@@ -22,7 +22,7 @@
             <!-- 将库存两作为最大值传给子组件 -->
           </p>
           <mt-button type="danger" size="small">立即购买</mt-button>
-          <mt-button type="primary" size="small" @click="ballFlag=!ballFlag">加入购物车</mt-button>
+          <mt-button type="primary" size="small" @click="addToShopCar">加入购物车</mt-button>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
       <buycomment :id="id"></buycomment>
     </div>
     <transition @before-enter="beforEnter" @enter="enter" @after-enter="afterEnter">
-      <div class="ball" v-show="ballFlag" ref="ball">0</div>
+      <div class="ball" v-show="ballFlag" ref="ball">{{count}}</div>
     </transition>
   </div>
 </template>
@@ -61,7 +61,7 @@ export default {
       bannerList: [],
       info: [],
       ballFlag: false,
-      count: 1 //保存选择器的值
+      count: 1 ,//保存选择器的值
     };
   },
   created() {
@@ -93,7 +93,6 @@ export default {
       const badgePosition = document
         .getElementById("badge")
         .getBoundingClientRect();
-
       const xDist = badgePosition.left - ballPosition.left;
       const yDist = badgePosition.top - ballPosition.top;
       el.offsetWidth;
@@ -103,10 +102,23 @@ export default {
     },
     afterEnter(el) {
       this.ballFlag = !this.ballFlag;
+      //实现小球运动完成之后再更新总数
+      // this.$emit("allNum",this.$store.getters.getAllNum)
+    },
+    addToShopCar() {
+      var carData = {
+        id: this.id,
+        num: parseInt(this.count),
+        price: this.info.sell_price,
+        option: true
+      };
+      //把carData提交到vuex
+      this.$store.commit("addToCar", carData);
+      // console.log(typeof carData.num);
+      this.ballFlag = !this.ballFlag;
     },
     getNumboxCount(data) {
       this.count = data;
-      //console.log(this.count);
     }
   },
   components: {
