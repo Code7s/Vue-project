@@ -1,6 +1,6 @@
 <template>
   <div class="shop-car">
-    <div class="mui-card" v-for="item in cardata" :key="item.id">
+    <div class="mui-card" v-for="(item,index) in cardata" :key="item.id">
       <div class="shopcar-list">
         <input type="checkbox" checked="checked" />
         <img :src="item.thumb_path" alt />
@@ -8,8 +8,9 @@
           <h3>{{item.title}}</h3>
           <p>
             <span>¥{{item.sell_price}}</span>
-            <shopcarnum></shopcarnum>
-            <a href="#">删除</a>
+            <!-- 循环哪项就取哪项的数量 这里的$store.getters.getShopCount[item.id]是对应ID的数量值，shopid="item.id"则是商品的ID值 -->
+            <shopcarnum :count="$store.getters.getShopCount[item.id]" :shopid="item.id"></shopcarnum>
+            <a href="#" @click.prevent="remove(item.id,index)">删除</a>
           </p>
         </div>
       </div>
@@ -17,7 +18,6 @@
     <div class="shop-total mui-card">总价：{{$store.getters.getAllPrice}}</div>
   </div>
 </template>
-
 <script>
 import shopcarnum from "../subcomponent/shopcar_numbox.vue";
 export default {
@@ -42,6 +42,10 @@ export default {
             }
           });
       }
+    },
+    remove(id,index){ //删除购物车商品
+      this.cardata.splice(index,1);
+      this.$store.commit('removeShop',id)
     }
   },
   created() {

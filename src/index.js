@@ -14,7 +14,7 @@ Vue.use(Vuex)
 
 //购物车状态管理
 // 获取本地存储的购物车数据保存到state中
-var car=JSON.parse(localStorage.getItem('car')||'[]')
+var car = JSON.parse(localStorage.getItem('car') || '[]')
 const store = new Vuex.Store({
   state: {
     //储存购物车数据
@@ -37,24 +37,49 @@ const store = new Vuex.Store({
         state.car.push(carData)
       }
       // 使用本地存储保存购物车数据
-      localStorage.setItem('car',JSON.stringify(state.car))
+      localStorage.setItem('car', JSON.stringify(state.car))
+    },
+    updateShopNum(state, updateData) {//修改购物车数量
+      state.car.some(item => {
+        if (item.id == updateData.id) {
+          item.num = parseInt(updateData.count)
+          return true
+        }
+      })
+      localStorage.setItem('car', JSON.stringify(state.car))
+    },
+    removeShop(state, id) { // 删除购物车商品时更新vuex的数据
+      state.car.some((item, i) => {
+        if (item.id == id) {
+          state.car.splice(i, 1)
+          return true
+        }
+      })
+      localStorage.setItem('car', JSON.stringify(state.car))
     }
   },
   getters: {
-    getAllNum:function(state){//计算总数量
-      var allNum=0
+    getAllNum(state) {//计算总数量
+      var allNum = 0
       state.car.forEach(item => {
         // console.log(item.num,item.price);
-        allNum+=item.num
+        allNum += item.num
       });
       return allNum;
     },
-    getAllPrice:function(state){//计算总价钱
-      var allPrice=0;
-      state.car.forEach(item=>{
-        allPrice+=item.num*item.price
+    getAllPrice(state) {//计算总价钱
+      var allPrice = 0;
+      state.car.forEach(item => {
+        allPrice += item.num * item.price
       })
       return allPrice
+    },
+    getShopCount(state) {
+      var o = {}//用来储存{id:num}
+      state.car.forEach(item => {
+        o[item.id] = item.num
+      })
+      return o;
     }
   }
 })

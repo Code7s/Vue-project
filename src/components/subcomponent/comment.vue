@@ -35,7 +35,7 @@ export default {
         .then(result => {
           if (result.body.status === 0) {
             this.commentList = this.commentList.concat(result.body.message);
-            console.log(this.commentList);
+            // console.log(this.commentList);
           } else {
             Toast("加载评论列表失败");
           }
