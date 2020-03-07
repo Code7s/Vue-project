@@ -56,13 +56,20 @@ const store = new Vuex.Store({
         }
       })
       localStorage.setItem('car', JSON.stringify(state.car))
+    },
+    updateOptions(state, o) {
+      state.car.forEach(item=> {
+        if (item.id == o.id) {
+          item.option = o.option
+        }
+      })
+      localStorage.setItem('car', JSON.stringify(state.car))
     }
   },
   getters: {
     getAllNum(state) {//计算总数量
       var allNum = 0
       state.car.forEach(item => {
-        // console.log(item.num,item.price);
         allNum += item.num
       });
       return allNum;
@@ -78,6 +85,26 @@ const store = new Vuex.Store({
       var o = {}//用来储存{id:num}
       state.car.forEach(item => {
         o[item.id] = item.num
+      })
+      return o;
+    },
+    getOption(state) {
+      var o = {} //{ id: option}
+      state.car.forEach(item => {
+        o[item.id] = item.option
+      })
+      return o;
+    },
+    getSum(state){
+      var o={
+        allNum:0,
+        allPrice:0
+      }
+      state.car.forEach(item=>{
+        if(item.option==true){
+          o.allNum+=item.num;
+          o.allPrice+=item.num*item.price
+        }
       })
       return o;
     }

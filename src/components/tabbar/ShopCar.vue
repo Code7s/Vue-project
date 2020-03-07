@@ -2,7 +2,7 @@
   <div class="shop-car">
     <div class="mui-card" v-for="(item,index) in cardata" :key="item.id">
       <div class="shopcar-list">
-        <input type="checkbox" checked="checked" />
+        <input v-model="$store.getters.getOption[item.id]" type="checkbox" @change="updateOption(item.id)"/>
         <img :src="item.thumb_path" alt />
         <div class="info">
           <h3>{{item.title}}</h3>
@@ -15,7 +15,16 @@
         </div>
       </div>
     </div>
-    <div class="shop-total mui-card">总价：{{$store.getters.getAllPrice}}</div>
+    <div class="shop-total mui-card">
+      <!-- <input type="checkbox" checked=""/> -->
+      <p>
+        总计：
+        <br />已勾选商品
+        <span>{{$store.getters.getSum.allNum}}</span>件，总价：
+        <span>¥{{$store.getters.getSum.allPrice}}</span>
+      </p>
+      <button>结算</button>
+    </div>
   </div>
 </template>
 <script>
@@ -43,10 +52,14 @@ export default {
           });
       }
     },
-    remove(id,index){ //删除购物车商品
-      this.cardata.splice(index,1);
-      this.$store.commit('removeShop',id)
-    }
+    remove(id, index) {
+      //删除购物车商品
+      this.cardata.splice(index, 1);
+      this.$store.commit("removeShop", id);
+    },
+    updateOption(id) {
+      this.$store.commit('updateOptions',{id,option:this.$store.getters.getOption[id]})
+    },
   },
   created() {
     this.getShopData();
@@ -90,6 +103,33 @@ export default {
           margin-left: 10px;
         }
       }
+    }
+  }
+  .shop-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    input {
+      width: 18px;
+      height: 18px;
+    }
+    p {
+      font-size: 14px;
+      color: #555;
+      margin: 0;
+      span {
+        font-size: 20px;
+        color: red;
+      }
+    }
+    button {
+      width: 80px;
+      height: 40px;
+      background-color: red;
+      color: #fff;
+      border: none;
+      font-size: 16px;
     }
   }
 }
