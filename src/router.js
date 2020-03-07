@@ -11,6 +11,7 @@ import PhotoInfo from './components/photos/PhotoInfo.vue'
 import Commodity from './components/buy/Commodity.vue'
 import CommodityInfo from './components/buy/CommodityInfo.vue'
 import BuyIntorduce from './components/buy/BuyIntroduce.vue'
+import About from './components/aboutus/AboutUs.vue'
 // 路由对象
 var routerObj = new VueRouter({
   routes: [
@@ -25,7 +26,8 @@ var routerObj = new VueRouter({
     { path: '/home/photoinfo/:id', component: PhotoInfo },
     { path: '/home/buy', component: Commodity },
     { path: '/home/commodityinfo/:id', component: CommodityInfo },
-    { path: '/home/buyintorduce/:id', component: BuyIntorduce }
+    { path: '/home/buyintorduce/:id', component: BuyIntorduce },
+    { path: '/home/about', component: About }
   ],
   linkActiveClass: 'mui-active'// 覆盖默认路由选中类(router-link-active)
 })

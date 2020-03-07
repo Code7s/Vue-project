@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>search</h1>
+    <h1>搜索功能尚未完成...</h1>
   </div>
 </template>
 

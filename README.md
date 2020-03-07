@@ -1746,7 +1746,16 @@ vm=new Vue({
 })
 ```
 
+## 问题
 
+在iOS上发现有的页面的下菜单栏（首页、会员、购物车、搜索）不显示但点击依旧可以跳转，解决方案：
+
+在index.html中给body添加样式：
+
+``` html
+<body style="position:absolute;top:0px;left:0px;right:0px;bottom:0px;padding:0;margin: 0;">
+
+```
 
 
 

@@ -36,8 +36,8 @@
 export default {
   data() {
     return {
-      flag: false
-    };
+      flag: true
+    }
   },
   methods: {
     goback() {
@@ -62,6 +62,7 @@ export default {
 .container {
   padding-top: 40px;
   overflow-x: hidden;
+  height: 100%;
 }
 .v-enter,
 .v-leave-to {

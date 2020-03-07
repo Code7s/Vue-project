@@ -71,6 +71,7 @@ export default {
 <style lang="scss" scoped>
 .shop-car {
   background-color: #eee;
+  height: 100%;
   overflow: auto;
   .shopcar-list {
     padding: 5px;

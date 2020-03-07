@@ -34,7 +34,7 @@
         </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <router-link to="/home/contact">
+        <router-link to="/home/about">
           <img src="../../images/contact.png" alt />
           <div class="mui-media-body">联系我们</div>
         </router-link>
@@ -73,17 +73,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#sub-nav {
-  background: white;
-  border: none;
-  .mui-table-view-cell {
+  #sub-nav {
+    background: white;
     border: none;
-    img {
-      width: 100%;
-    }
-    .mui-media-body {
-      font-size: 14px;
+    .mui-table-view-cell {
+      border: none;
+      img {
+        width: 100%;
+      }
+      .mui-media-body {
+        font-size: 14px;
+      }
     }
   }
-}
 </style>
