@@ -1,7 +1,11 @@
 <template>
   <div class="container">
     <!-- header -->
-    <mt-header id="header" fixed title="Code7s Vue项目"></mt-header>
+    <mt-header id="header" fixed title="Code7s Vue项目">
+      <span slot="left" v-show="flag" @click="goback">
+        <mt-button icon="back">返回</mt-button>
+      </span>
+    </mt-header>
     <transition>
       <router-view></router-view>
     </transition>
@@ -29,11 +33,30 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      flag: false
+    };
+  },
+  methods: {
+    goback() {
+      this.$router.go(-1);
+    }
+  },
+  created() {
+    this.$route.path == "/home" ? (this.flag = false) : (this.flag = true);
+  },
+  watch: {
+    "$route.path": function(newVal) {
+      newVal == "/home" ? (this.flag = false) : (this.flag = true);
+    }
+  }
+};
 </script>
 
 <style scoped>
-#header{
+#header {
   z-index: 10000;
 }
 .container {
