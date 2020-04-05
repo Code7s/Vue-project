@@ -141,7 +141,7 @@ import App from './App.vue'
 在index.js中导入组件:
 
 ```js
-// 按需导入MintUI*
+// 按需导入MintUI
 import { Header } from 'mint-ui';
 import 'mint-ui/lib/style.css'; //vue2.5需导入css
 Vue.component(Header.name, Header);

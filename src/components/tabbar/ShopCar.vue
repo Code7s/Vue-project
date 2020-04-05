@@ -95,13 +95,16 @@ export default {
         text-overflow: ellipsis;
       }
       p {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
         margin: 0;
         span {
           color: red;
           font-size: 20px;
         }
         a {
-          margin-left: 10px;
+          margin-left: 15px;
         }
       }
     }

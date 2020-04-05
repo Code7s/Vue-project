@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --host"
+    "dev": "webpack-dev-server --host 192.168.8.109"
   },
   "keywords": [],
   "author": "",

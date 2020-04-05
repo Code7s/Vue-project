@@ -49,25 +49,41 @@ import swiper from "../subcomponent/swiper.vue";
 export default {
   data() {
     return {
-      bannerList: [] //轮播
+            bannerList: [
+        {
+          id: 1,
+          img:
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586089391615&di=2b84e4ae7a12672d4ed8a928438a9867&imgtype=0&src=http%3A%2F%2Fimg1.sooshong.com%2Fpics%2F201712%2F7%2F2017127104231990.jpg"
+        },
+        {
+          id: 2,
+          img:
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586089117337&di=ee88488a791c2b4e3219127bc44257ec&imgtype=0&src=http%3A%2F%2Fstatic.open-open.com%2Flib%2FuploadImg%2F20170812%2F20170812080605_40.png"
+        },
+        {
+          id: 3,
+          img:
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586089006809&di=59975162057e28e0c67ef3df8b6fefd0&imgtype=0&src=http%3A%2F%2Fimg.xz7.com%2Fup%2F2017-12%2F20171219651.jpg"
+        }
+      ]
     };
   },
   methods: {
-    getBanner() {
-      this.$http.get("api/getlunbo").then(result => {
-        if (result.body.status === 0) {
-          this.bannerList = result.body.message;
-        } else {
-          Toast("加载轮播图失败");
-        }
-      });
-    }
+    // getBanner() {
+    //   this.$http.get("api/getlunbo").then(result => {
+    //     if (result.body.status === 0) {
+    //       this.bannerList = result.body.message;
+    //     } else {
+    //       Toast("加载轮播图失败");
+    //     }
+    //   });
+    // }
   },
   components: {
     swiper
   },
   created() {
-    this.getBanner();
+    // this.getBanner();
   }
 };
 </script>
