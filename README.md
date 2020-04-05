@@ -1,6 +1,7 @@
 # Vue项目
 
 > 这是一个使用vue+webpack搭建的移动端网站
+预览地址：http://code7s.com/Vue-project/dist
 
 ## 技术栈
 
