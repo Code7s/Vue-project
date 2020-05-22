@@ -3,6 +3,8 @@
 > 这是一个使用vue+webpack搭建的移动端网站
 预览地址：http://code7s.gitee.io/vue-project
 
+**项目接口挂了**
+
 ## 技术栈
 
 1. Vue
